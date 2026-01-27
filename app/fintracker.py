@@ -1,0 +1,131 @@
+import os
+from expense import Expense
+import calendar
+import datetime
+
+
+
+def main():
+    print(f"Running FinTracker...")
+    expense_file_path = "expenses.csv"
+    budget = 2000.00
+
+    # Get user to input their expenses
+    expense: Expense = get_user_input()
+
+    # Record it into a file or database
+    save_expense_to_file(expense, expense_file_path)
+
+    #Read the file and summarize the expenses
+    summarize_expenses(expense_file_path, budget)
+    
+
+def get_user_input() -> Expense:
+    print(f"🎯 Getting user expenses...")
+    try:
+        expense_name = input("Enter expense name: ")
+        expense_amount = float(input("Enter expense amount: "))
+    except ValueError:
+        print("Invalid input. Please enter a valid amount.")
+        return get_user_input()  
+
+    expense_categories = [
+        "🍔Food",
+        "📚Education",
+        "🏠Home",
+        "⚡Utilities",
+        "🎶Entertainment",
+        "🏥Health",
+        "🚗Transportation",
+        "📦 Subscriptions",
+        "🤷Miscellaneous",
+    ]
+
+    while True:
+        print("Select your expense category: ")
+        
+        for i, category in enumerate(expense_categories, start=1):
+            print(f"  {i}. {category}")
+
+        value_range = f"[ 1-{len(expense_categories)} ] "
+
+        try:
+            selected_option = int(input(f"Enter a category number: \n {value_range}: ")) - 1
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+            continue
+        # Fix problem of a user entering something that is not a number or out of range
+        
+        if selected_option in range(len(expense_categories)):
+            selected_category = expense_categories[selected_option]
+            new_expense = Expense(name = expense_name, 
+                                  category = selected_category, 
+                                  amount = expense_amount)
+            return new_expense
+
+        else: 
+            print(f"Invalid option. Please try again.")
+            continue
+ 
+
+def save_expense_to_file(expense: Expense, expense_file_path: str):
+    print(f"\n 🎯Saving expense to file... \n {expense} \n \n...to {expense_file_path}\n")
+    with open(expense_file_path, "a") as file:
+        file.write(f"{expense.name},{expense.category},{expense.amount}\n")
+
+
+def summarize_expenses(expense_file_path: str, budget: float ):
+    print(f"🎯Summarizing expenses...")
+    
+    if not os.path.exists(expense_file_path):
+        print(f"No expenses file found.")
+        return
+    
+    expenses: list[Expense] = []
+    
+    with open(expense_file_path, "r") as file:  
+        lines = file.readlines()
+        for line in lines:
+            expense_name, expense_category, expense_amount = [x.strip() for x in line.strip().split(",")]
+            line_expense = Expense(name=expense_name, category=expense_category, amount=float(expense_amount))
+            expenses.append(line_expense)
+
+    amount_by_category: dict[str, float] = {}
+    for expense in expenses:
+        key = expense.category
+        if key in amount_by_category:
+            amount_by_category[key] += expense.amount
+        else:
+            amount_by_category[key] = expense.amount
+
+    print(f"\n \033[1m===========EXPENSE BY CATEGORY SUMMARY===========\033[0m")
+    for key, amount in amount_by_category.items():
+        print(f"\n \033[1m  Category: {key} \n Total Amount: ${amount:.2f}\033[0m")
+        print(" ------------------------------------------------ ")
+
+    total_spent = sum([expense.amount for expense in expenses])
+    print(f"\n \033[1m===========TOTAL SPENT===========\n You've spent ${total_spent:.2f} this month\033[0m")
+
+    remaining_budget = budget - total_spent
+    if remaining_budget >= 0:
+        print(f"\n \033[1m===========BUDGET STATUS===========\n You are within your budget! You have ${remaining_budget:.2f} remaining.\033[0m")
+    else:
+        print(f"\n \033[1m===========BUDGET STATUS===========\n You've exceeded your budget by ${-remaining_budget:.2f}. Consider reviewing your expenses.\033[0m")
+
+    now = datetime.datetime.now()
+    days_in_month = calendar.monthrange(now.year, now.month)[1]
+    remaining_days = days_in_month - now.day
+    print(f"\n \033[1m===========DAYS REMAINING IN MONTH===========\n There are {remaining_days} days remaining in this month.\033[0m")
+
+    daily_budget = remaining_budget / remaining_days if remaining_days > 0 else 0
+    if daily_budget >= 0:
+        print(f"\n \033[1m===========DAILY BUDGET===========\n You can spend up to ${daily_budget:.2f} per day for the rest of the month to stay within your budget.\033[0m")
+    else:
+        print(f"\n \033[1m===========DAILY BUDGET===========\n You have exceeded your budget for the month. Consider cutting back on daily expenses.\033[0m")
+
+
+def green_text(text: str) -> str:
+    return f"\033[92m{text}\033[0m"
+
+if __name__ == "__main__":
+    main()
