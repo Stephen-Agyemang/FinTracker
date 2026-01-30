@@ -5,6 +5,7 @@ class Expense:
         self.amount = amount
 
     def __repr__(self) -> str:
-        return f"\n * NAME = {self.name} \n * CATEGORY = {self.category} \n * AMOUNT = ${self.amount:.2f}"  
+        # Table row representation (no borders, just values)
+        return f"| {self.name:<18} | {self.category:<16} | {self.amount:>10.2f} |"
 
 
