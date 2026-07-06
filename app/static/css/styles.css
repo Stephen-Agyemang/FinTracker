@@ -1,0 +1,128 @@
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── Card tiers ──────────────────────────────── */
+        .g1 {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+        }
+        .g2 {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .g3 {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* ── Chrome ──────────────────────────────────── */
+        .glass-sidebar {
+            background: #ffffff;
+            border-right: 1px solid #e2e8f0;
+        }
+        .glass-header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .glass-drawer {
+            background: #ffffff;
+            border-color: #e2e8f0;
+        }
+        .glass-modal {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+        }
+
+        /* ── Nav ─────────────────────────────────────── */
+        .nav-link {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 14px; border-radius: 12px;
+            color: #64748b; font-size: 13px; font-weight: 500;
+            cursor: pointer; transition: all .15s;
+            letter-spacing: -0.01em;
+            background: #ffffff;
+            border: 1px solid #e8edf3;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .nav-link:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            color: #1e293b;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            transform: translateY(-1px);
+        }
+        .nav-link-active {
+            background: #0f172a !important;
+            color: #ffffff !important;
+            border-color: #0f172a !important;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(15,23,42,0.22) !important;
+        }
+        .nav-link .material-symbols-outlined {
+            font-size: 17px;
+            color: inherit;
+            transition: color .15s;
+            flex-shrink: 0;
+        }
+
+        /* ── Scrollbar ───────────────────────────────── */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 99px; }
+
+        /* ── Animations ──────────────────────────────── */
+        @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+        .fade-up { animation: fadeUp .25s ease both; }
+
+        /* ── Progress bars ───────────────────────────── */
+        .pbar { height: 4px; border-radius: 99px; background: #f1f5f9; overflow: hidden; }
+        .pbar-fill { height: 100%; border-radius: 99px; transition: width .7s cubic-bezier(.4,0,.2,1); }
+
+        /* ── Form focus ──────────────────────────────── */
+        input:not(#chat-input):focus, select:focus { outline: none; box-shadow: 0 0 0 2px rgba(13,148,136,0.2); border-color: #0d9488 !important; }
+        #chat-input:focus { outline: none; box-shadow: none; }
+        .chat-input-wrap:focus-within { border-color: #0d9488 !important; box-shadow: 0 0 0 3px rgba(13,148,136,0.08); }
+
+        /* ── Inputs ──────────────────────────────────── */
+        input:not(#chat-input), select {
+            background: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+
+        /* ── Mobile sidebar ──────────────────────────── */
+        #sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.35);
+            z-index: 40;
+        }
+        #sidebar-overlay.visible { display: block; }
+
+        #mobile-menu-btn { display: none; }
+
+        @media (max-width: 767px) {
+            #app-sidebar {
+                position: fixed !important;
+                left: -240px;
+                top: 0;
+                height: 100% !important;
+                z-index: 50;
+                transition: left 0.25s ease;
+                width: 224px !important;
+                flex-shrink: 0;
+            }
+            #app-sidebar.sidebar-open { left: 0; }
+            #mobile-menu-btn { display: flex !important; }
+        }
