@@ -95,49 +95,7 @@ uvicorn server:app --host 0.0.0.0 --port 8082 --reload
 
 Open [http://localhost:8082](http://localhost:8082) — the app loads straight to your dashboard.
 
----
-
-## Project Structure
-
-```
-FinTracker/
-├── app/
-│   ├── server.py          # FastAPI routes and Plaid integration
-│   ├── advisor.py         # AI advisor (Gemini + Claude)
-│   ├── expense_store.py   # SQLite data layer + subscription detection
-│   ├── templates/
-│   │   └── index.html     # Full frontend (single page)
-│   └── fintracker.db      # SQLite database (auto-created, gitignored)
-├── .env                   # API keys (gitignored)
-├── requirements.txt
-└── IMPLEMENTATION.md      # Full technical reference
-```
-
----
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/summary` | Dashboard metrics |
-| GET | `/api/insights` | AI-generated insight |
-| POST | `/api/expenses` | Add transaction |
-| DELETE | `/api/expenses/delete-by-name/{name}` | Delete transaction |
-| GET | `/api/export` | Download ledger as CSV |
-| GET | `/api/subscriptions` | Subscription analysis |
-| POST | `/api/subscriptions/cancel` | Mark cancelled + get AI email draft |
-| POST | `/api/subscriptions/reactivate` | Reactivate subscription |
-| POST | `/api/subscriptions/draft-email` | Draft cancellation email |
-| GET | `/api/plaid/status` | Bank connection status |
-| POST | `/api/plaid/create-link-token` | Start Plaid OAuth flow |
-| POST | `/api/plaid/exchange-token` | Complete Plaid connection |
-| POST | `/api/plaid/sync` | Import transactions from bank |
-| DELETE | `/api/plaid/disconnect` | Disconnect bank account |
-| POST | `/api/import/csv` | Import bank statement CSV |
-| GET | `/api/settings` | Get user settings |
-| POST | `/api/settings` | Update settings |
-| POST | `/api/chat` | Chat with AI advisor |
-| POST | `/api/chat/stream` | Streaming chat response |
+> Full technical reference (architecture, API endpoints, DB schema) lives in [IMPLEMENTATION.md](IMPLEMENTATION.md).
 
 ---
 
@@ -148,29 +106,6 @@ With `PLAID_ENV=sandbox`, use Plaid's test credentials in the OAuth flow:
 - **Password:** `pass_good`
 
 To connect real accounts, apply for production access at [dashboard.plaid.com](https://dashboard.plaid.com). Plaid requires a live deployed URL and a privacy policy page before approving production access.
-
----
-
-## Deployment Roadmap
-
-The intended progression from local to production:
-
-**Step 1 — Deploy to Render.com**
-Push to GitHub, connect the repo as a Web Service. Build command: `pip install -r requirements.txt`. Start command: `cd app && uvicorn server:app --host 0.0.0.0 --port $PORT`. Set all env vars in the Render dashboard (same keys as `.env`). Free tier gives a `.onrender.com` URL immediately.
-
-> Note: Render's free tier uses ephemeral storage — SQLite data resets on redeploy. Migrate to Postgres before storing anything you care about.
-
-**Step 2 — Migrate SQLite → Render Postgres**
-Render offers free managed PostgreSQL. The queries barely change — it's the same SQL, just a different connection string. This is what makes the data permanent.
-
-**Step 3 — Custom domain**
-Buy a `.com` on Namecheap (~$10/yr). Add it in Render → Settings → Custom Domain. Render issues a CNAME; add it in Namecheap DNS. HTTPS is automatic via Let's Encrypt. A real domain is required for Plaid production approval.
-
-**Step 4 — Plaid production access**
-Apply at [dashboard.plaid.com](https://dashboard.plaid.com) once you have a live domain and a privacy policy page. Plaid reviews applications manually — approval takes a few days.
-
-**Step 5 — Docker + Google Cloud Run (optional)**
-Only worth pursuing if you want to learn container-based infrastructure or need more control than Render provides. Do steps 1–4 first — Cloud Run makes much more sense once you've deployed something the simple way.
 
 ---
 
