@@ -17,3 +17,9 @@ env/
 # Data/Secrets
 .env
 *.csv
+*.db
+*.db-wal
+*.db-shm
+
+# Agent memory
+memory/
