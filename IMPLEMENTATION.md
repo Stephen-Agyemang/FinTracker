@@ -13,7 +13,7 @@ Keep this file updated as the project evolves. Read it at the start of every ses
 | AI — Gemini | `google-genai` SDK | `models/gemini-2.5-flash-lite` (active default) |
 | AI — Claude | `anthropic` SDK | `claude-opus-4-8` |
 | Bank data | Plaid API | `plaid-python 39.2.0`, sandbox mode |
-| Frontend | Single-page HTML/JS | `app/templates/index.html` + `app/static/{css,js}` |
+| Frontend | Jinja2 template + static assets | `index.html` skeleton includes `templates/partials/*` and `templates/views/*`; CSS/JS in `app/static/{css,js}` |
 | Auth | None | Single local user (`__local__`), auto-created; no login. Per-user `user_id` plumbing retained in the data layer for a future re-add |
 | Styles | Tailwind CDN + custom CSS | Clean & minimal — white/slate base, teal accent |
 | Charts | Chart.js 4.4.0 | Capital velocity, donut, burn trajectory |

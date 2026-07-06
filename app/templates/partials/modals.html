@@ -1,0 +1,185 @@
+<!-- ══════════════════════════════════════════════════════
+     ADD TRANSACTION MODAL
+══════════════════════════════════════════════════════ -->
+<div id="record-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300" style="background:rgba(15,23,42,0.35);backdrop-filter:blur(6px)">
+    <div class="rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl transform scale-95 transition-transform duration-300" class="glass-modal">
+        <div class="flex justify-between items-center mb-5">
+            <h3 class="text-sm font-black text-slate-900 font-outfit">Add Record</h3>
+            <button onclick="toggleModal(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 transition-all">
+                <span class="material-symbols-outlined text-lg">close</span>
+            </button>
+        </div>
+        <form onsubmit="handleRecordSubmit(event)" class="flex flex-col gap-3.5 text-[11px] font-semibold">
+            <div>
+                <label class="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Transaction Type</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" id="type-expense-btn" onclick="setTransactionType('expense')" class="py-2.5 rounded-xl font-bold transition-all text-white" style="background:#0d9488;border:1px solid #0d9488">Expense</button>
+                    <button type="button" id="type-income-btn" onclick="setTransactionType('income')" class="py-2.5 rounded-xl font-bold transition-all text-slate-500 bg-slate-50 border border-slate-200">Income</button>
+                </div>
+            </div>
+            <div>
+                <label class="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Name</label>
+                <input type="text" id="rec-name" required placeholder="e.g. Netflix, Grocery run" class="w-full g1 rounded-xl py-3 px-4 text-slate-700 placeholder-slate-300" />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Amount ($)</label>
+                    <input type="number" id="rec-amount" step="0.01" min="0" required placeholder="0.00" class="w-full g1 rounded-xl py-3 px-4 text-slate-700 placeholder-slate-300" />
+                </div>
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Payment Method</label>
+                    <select id="rec-payment" class="w-full g1 rounded-xl py-3 px-4 text-slate-700">
+                        <option value="VISA • 4242">VISA • 4242</option>
+                        <option value="ACH AUTO">ACH AUTO</option>
+                        <option value="DIRECT DEP">DIRECT DEP</option>
+                        <option value="CASH">CASH</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label class="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Category</label>
+                <select id="rec-category" class="w-full g1 rounded-xl py-3 px-4 text-slate-700">
+                    <option value="🍔Food">🍔 Food & Dining</option>
+                    <option value="🍺Dining & Bars">🍺 Dining & Bars</option>
+                    <option value="🛍️Shopping">🛍️ Shopping & Retail</option>
+                    <option value="✈️Travel">✈️ Travel</option>
+                    <option value="🚗Transportation">🚗 Transportation</option>
+                    <option value="🏥Health">🏥 Health & Fitness</option>
+                    <option value="💅Personal Care">💅 Personal Care</option>
+                    <option value="🐾Pets">🐾 Pets</option>
+                    <option value="📦 Subscriptions">📦 Subscriptions</option>
+                    <option value="📱Phone & Internet">📱 Phone & Internet</option>
+                    <option value="⚡Utilities">⚡ Utilities</option>
+                    <option value="🏠Home">🏠 Home</option>
+                    <option value="🏦Insurance">🏦 Insurance</option>
+                    <option value="💼Business">💼 Business & Work</option>
+                    <option value="💹Investments">💹 Savings & Investments</option>
+                    <option value="📚Education">📚 Education</option>
+                    <option value="🎶Entertainment">🎶 Entertainment</option>
+                    <option value="🎁Gifts & Giving">🎁 Gifts & Giving</option>
+                    <option value="🧒Childcare">🧒 Childcare</option>
+                    <option value="🤷Miscellaneous">🤷 Miscellaneous</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Status</label>
+                    <select id="rec-status" class="w-full g1 rounded-xl py-3 px-4 text-slate-700">
+                        <option value="Completed">Completed</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Date</label>
+                    <input type="date" id="rec-date" class="w-full g1 rounded-xl py-3 px-4 text-slate-700" />
+                </div>
+            </div>
+            <button type="submit" id="rec-submit-btn" class="w-full text-white font-black py-3.5 rounded-xl mt-1 hover:opacity-90 transition-all font-outfit uppercase tracking-wider" style="background:#0d9488">
+                Save Transaction
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SUBSCRIPTION REVIEW MODAL
+══════════════════════════════════════════════════════ -->
+<div id="subscription-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300" style="background:rgba(15,23,42,0.35);backdrop-filter:blur(6px)">
+    <div class="rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl transform scale-95 transition-transform duration-300" class="glass-modal">
+        <div class="flex items-center justify-between mb-5">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-purple-500 text-lg" style="font-variation-settings:'FILL' 1">auto_awesome</span>
+                <h3 class="text-sm font-black text-slate-900 font-outfit">Subscription Review</h3>
+            </div>
+            <button onclick="toggleSubscriptionModal(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div id="subscription-audit-list" class="space-y-3 max-h-72 overflow-y-auto"></div>
+        <button onclick="toggleSubscriptionModal(false)" class="w-full mt-4 py-3 g1 text-xs font-bold text-slate-400 rounded-xl hover:text-slate-700 transition-all">Close</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     CANCELLATION FLOW MODAL
+══════════════════════════════════════════════════════ -->
+<div id="cancel-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300" style="background:rgba(15,23,42,0.45);backdrop-filter:blur(6px)">
+    <div class="rounded-2xl w-full max-w-lg mx-4 shadow-2xl transform scale-95 transition-transform duration-300 overflow-hidden" class="glass-modal">
+        <!-- Header -->
+        <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl flex items-center justify-center" style="background:rgba(225,29,72,0.08)">
+                    <span class="material-symbols-outlined text-rose-500 text-base" style="font-variation-settings:'FILL' 1">cancel</span>
+                </div>
+                <div>
+                    <div id="cancel-modal-title" class="text-sm font-black text-slate-900 font-outfit">Cancel Subscription</div>
+                    <div id="cancel-modal-sub" class="text-[10px] text-slate-400">$0.00 / month</div>
+                </div>
+            </div>
+            <button onclick="toggleCancelModal(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <!-- Steps -->
+        <div class="px-6 py-5 space-y-4">
+
+            <!-- Step 1: Direct cancel link -->
+            <div id="cancel-direct-wrap" class="hidden">
+                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Quick Cancel — Direct Link</div>
+                <a id="cancel-direct-link" href="#" target="_blank" rel="noopener noreferrer"
+                   class="flex items-center justify-between p-4 rounded-xl transition-all group"
+                   style="background:rgba(13,148,136,0.06);border:1px solid rgba(13,148,136,0.2)">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-teal-600 text-lg" style="font-variation-settings:'FILL' 1">open_in_new</span>
+                        <div>
+                            <div class="text-xs font-bold text-teal-700">Cancel via official website</div>
+                            <div class="text-[10px] text-slate-400">Opens the cancellation page directly</div>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-teal-400 group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+
+            <!-- Step 2: AI Cancellation Email -->
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">AI Cancellation Email</div>
+                    <button id="draft-email-btn" onclick="draftCancellationEmail()" class="flex items-center gap-1 text-[10px] font-bold text-purple-600 hover:text-purple-700 transition-all">
+                        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">auto_awesome</span>
+                        Draft with AI
+                    </button>
+                </div>
+                <div id="email-draft-area" class="hidden space-y-2">
+                    <pre id="email-draft-text" class="text-[11px] text-slate-700 leading-relaxed whitespace-pre-wrap p-4 rounded-xl font-sans" style="background:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.65);max-height:200px;overflow-y:auto"></pre>
+                    <div class="flex gap-2">
+                        <button onclick="copyEmailDraft()" class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold text-teal-700 transition-all" style="background:rgba(13,148,136,0.07);border:1px solid rgba(13,148,136,0.2)">
+                            <span class="material-symbols-outlined text-sm">content_copy</span> Copy
+                        </button>
+                        <button onclick="sendEmailDraft()" class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold text-blue-700 transition-all" style="background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.2)">
+                            <span class="material-symbols-outlined text-sm">send</span> Open in Mail
+                        </button>
+                    </div>
+                </div>
+                <div id="email-draft-loading" class="hidden text-center py-4 text-[11px] text-purple-500">
+                    <span class="material-symbols-outlined text-2xl animate-spin block mb-1" style="font-variation-settings:'FILL' 1">autorenew</span>
+                    Drafting cancellation email…
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer actions -->
+        <div class="px-6 py-4 flex gap-2 border-t border-slate-100 bg-slate-50">
+            <button onclick="confirmCancelSubscription()" id="confirm-cancel-btn"
+                    class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl text-xs font-bold text-rose-600 hover:text-rose-700 transition-all font-outfit uppercase tracking-wider"
+                    style="background:rgba(225,29,72,0.06);border:1px solid rgba(225,29,72,0.18)">
+                <span class="material-symbols-outlined text-sm">check_circle</span>
+                Mark as Cancelled
+            </button>
+            <button onclick="toggleCancelModal(false)" class="px-5 py-3 g1 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-700 transition-all">
+                Keep It
+            </button>
+        </div>
+    </div>
+</div>
+

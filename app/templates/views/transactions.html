@@ -1,0 +1,32 @@
+            <!-- ─────────────────────────────── VIEW: TRANSACTIONS ─── -->
+            <div id="view-transactions" class="hidden space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] text-slate-400 font-semibold">All transactions, newest first</span>
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleModal(true)" class="flex items-center gap-1.5 px-3 py-2 text-white text-[11px] font-bold rounded-xl hover:opacity-90 transition-all font-outfit" style="background:#0d9488">
+                            <span class="material-symbols-outlined text-sm">add</span>New Record
+                        </button>
+                        <button onclick="window.location='/api/export'" class="g1 flex items-center gap-1.5 px-3 py-2 text-slate-500 text-[11px] font-bold rounded-xl hover:text-slate-800 transition-all shadow-sm">
+                            <span class="material-symbols-outlined text-sm">download</span>Export CSV
+                        </button>
+                    </div>
+                </div>
+                <div class="g1 rounded-2xl overflow-hidden shadow-sm">
+                    <table class="w-full text-[11px]">
+                        <thead>
+                            <tr style="border-bottom:1px solid rgba(0,0,0,0.06)">
+                                <th class="text-left text-[9px] font-bold text-slate-400 uppercase tracking-wider px-5 py-3.5">Name</th>
+                                <th class="text-left text-[9px] font-bold text-slate-400 uppercase tracking-wider px-4 py-3.5 hidden md:table-cell">Category</th>
+                                <th class="text-left text-[9px] font-bold text-slate-400 uppercase tracking-wider px-4 py-3.5 hidden lg:table-cell">Date</th>
+                                <th class="text-left text-[9px] font-bold text-slate-400 uppercase tracking-wider px-4 py-3.5 hidden lg:table-cell">Method</th>
+                                <th class="text-left text-[9px] font-bold text-slate-400 uppercase tracking-wider px-4 py-3.5 hidden md:table-cell">Status</th>
+                                <th class="text-right text-[9px] font-bold text-slate-400 uppercase tracking-wider px-5 py-3.5">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ledger-rows-body" class="divide-y" style="--tw-divide-opacity:1">
+                            <tr><td colspan="6" class="text-center py-10 text-slate-400 text-xs">No transactions found</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- end transactions -->
+

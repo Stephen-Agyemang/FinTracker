@@ -1,0 +1,32 @@
+            <!-- ─────────────────────────────── VIEW: PORTFOLIO ─── -->
+            <div id="view-portfolio" class="hidden space-y-4">
+                <div class="g1 rounded-2xl p-6 space-y-5 shadow-sm">
+                    <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Savings Goal Calculator</h3>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-bold text-slate-800">Target Amount</span>
+                        <span id="goal-val-display" class="text-xl font-black font-outfit text-teal-600">$10,000</span>
+                    </div>
+                    <input type="range" min="1000" max="100000" step="500" value="10000" oninput="updateGoalCalc(this.value)" class="w-full accent-teal-600 cursor-pointer" />
+                    <div class="g2 rounded-xl p-4 flex items-center justify-between shadow-sm">
+                        <span class="text-xs text-slate-500">Estimated time to reach goal</span>
+                        <span id="goal-months-needed" class="text-base font-black text-slate-900 font-outfit">10 Months</span>
+                    </div>
+                </div>
+
+                <!-- Quick link to bank connection -->
+                <div class="g1 rounded-2xl p-5 shadow-sm flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(13,148,136,0.1)">
+                            <span class="material-symbols-outlined text-teal-600 text-lg" style="font-variation-settings:'FILL' 1">account_balance</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-slate-800">Connect Your Bank</div>
+                            <div class="text-[11px] text-slate-400 mt-0.5">Auto-import transactions via Plaid</div>
+                        </div>
+                    </div>
+                    <button onclick="switchView('bank', document.querySelector('[onclick*=bank]'))" class="flex items-center gap-1.5 px-4 py-2 text-white text-xs font-bold rounded-xl hover:opacity-90 transition-all" style="background:#0d9488">
+                        Connect →
+                    </button>
+                </div>
+            </div><!-- end portfolio -->
+

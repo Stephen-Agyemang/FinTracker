@@ -1,0 +1,107 @@
+            <!-- ───────────────────────────────── VIEW: BANK CONNECTION ─── -->
+            <div id="view-bank" class="hidden space-y-4">
+
+                <!-- Primary status card -->
+                <div id="bank-status-bar" class="g1 rounded-2xl p-5 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div id="bank-status-icon" class="w-11 h-11 rounded-xl flex items-center justify-center" style="background:rgba(100,116,139,0.08)">
+                                <span class="material-symbols-outlined text-slate-400 text-xl" style="font-variation-settings:'FILL' 1">account_balance</span>
+                            </div>
+                            <div>
+                                <div id="bank-status-title" class="text-sm font-black text-slate-800">No Bank Connected</div>
+                                <div id="bank-status-sub" class="text-[10px] text-slate-400 mt-0.5">Connect your bank to auto-import transactions</div>
+                            </div>
+                        </div>
+                        <div id="bank-action-btn-wrap">
+                            <button onclick="connectBank()" class="flex items-center gap-2 px-5 py-2.5 text-white text-xs font-bold rounded-xl hover:opacity-90 transition-all font-outfit shadow-sm" style="background:#0d9488">
+                                <span class="material-symbols-outlined text-sm">add_link</span> Connect Bank
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plaid setup instructions (shown when not configured) -->
+                <div id="plaid-setup-notice" class="hidden g1 rounded-2xl p-5 shadow-sm" style="background:rgba(245,243,255,0.9);border-color:rgba(124,58,237,0.15)">
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-purple-400 text-xl mt-0.5" style="font-variation-settings:'FILL' 1">info</span>
+                        <div>
+                            <div class="text-xs font-bold text-purple-700 mb-1.5">Plaid Credentials Required</div>
+                            <p class="text-[11px] text-slate-500 leading-relaxed mb-2">Add your Plaid credentials to <code class="bg-slate-100 px-1 py-0.5 rounded text-slate-700 font-mono">.env</code> and restart the server.</p>
+                            <pre class="text-[11px] bg-slate-900 text-emerald-400 rounded-xl p-3 font-mono leading-relaxed">PLAID_CLIENT_ID=your_client_id
+PLAID_SECRET=your_secret
+PLAID_ENV=sandbox</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sync success result -->
+                <div id="plaid-sync-result" class="hidden g1 rounded-2xl p-5 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-emerald-600 text-2xl" style="font-variation-settings:'FILL' 1">check_circle</span>
+                        <div>
+                            <div class="text-sm font-bold text-slate-800">Sync Complete</div>
+                            <div id="plaid-sync-detail" class="text-[11px] text-slate-500 mt-0.5"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How it works — 3 steps -->
+                <div class="g1 rounded-2xl p-6 shadow-sm">
+                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-5">How it works</div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <div class="flex flex-col gap-2">
+                            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(13,148,136,0.08)">
+                                <span class="material-symbols-outlined text-teal-600 text-lg" style="font-variation-settings:'FILL' 1">lock</span>
+                            </div>
+                            <div class="text-xs font-bold text-slate-800">1. Bank-grade security</div>
+                            <p class="text-[11px] text-slate-500 leading-relaxed">Powered by Plaid — the same technology behind Cash App, Venmo, and Robinhood. Your bank password is never seen or stored by FinTracker.</p>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(59,130,246,0.08)">
+                                <span class="material-symbols-outlined text-blue-500 text-lg" style="font-variation-settings:'FILL' 1">sync</span>
+                            </div>
+                            <div class="text-xs font-bold text-slate-800">2. Auto-categorized</div>
+                            <p class="text-[11px] text-slate-500 leading-relaxed">30 days of real transactions imported and sorted into categories automatically — no manual entry, no spreadsheets.</p>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(124,58,237,0.08)">
+                                <span class="material-symbols-outlined text-purple-500 text-lg" style="font-variation-settings:'FILL' 1">manage_search</span>
+                            </div>
+                            <div class="text-xs font-bold text-slate-800">3. Subscription detection</div>
+                            <p class="text-[11px] text-slate-500 leading-relaxed">Recurring charges are automatically surfaced in your Subscriptions tab so you can review and cancel anything you don't need.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CSV fallback — collapsed by default -->
+                <div>
+                    <button onclick="toggleCsvPanel()" class="text-[11px] text-slate-400 hover:text-slate-600 transition-all flex items-center gap-1.5 mx-auto">
+                        <span class="material-symbols-outlined text-sm">expand_more</span>
+                        Can't connect your bank? Import a CSV instead
+                    </button>
+                    <div id="csv-panel" class="hidden mt-3 g1 rounded-2xl p-5 shadow-sm space-y-3">
+                        <div class="text-xs font-bold text-slate-700">Import Bank Statement CSV</div>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">Download a statement CSV from your bank's website (usually under "Export" or "Download transactions"), then upload it here. Works with Chase, BofA, Wells Fargo, Citi, and most banks.</p>
+                        <label id="csv-drop-zone" for="csv-file-input"
+                            class="flex flex-col items-center justify-center gap-2 rounded-xl py-5 cursor-pointer transition-all border-2 border-dashed"
+                            style="border-color:rgba(13,148,136,0.2);background:rgba(13,148,136,0.02)"
+                            ondragover="event.preventDefault();this.style.background='rgba(13,148,136,0.07)'"
+                            ondragleave="this.style.background='rgba(13,148,136,0.02)'"
+                            ondrop="handleCsvDrop(event)">
+                            <span class="material-symbols-outlined text-teal-400 text-2xl" style="font-variation-settings:'FILL' 1">cloud_upload</span>
+                            <div class="text-xs font-bold text-slate-500">Drag & drop or click to browse</div>
+                            <input id="csv-file-input" type="file" accept=".csv" class="hidden" onchange="handleCsvUpload(this.files[0])">
+                        </label>
+                        <div id="csv-import-result" class="hidden flex items-center gap-2 p-3 rounded-xl" style="background:rgba(5,150,105,0.06);border:1px solid rgba(5,150,105,0.12)">
+                            <span class="material-symbols-outlined text-emerald-600 text-base" style="font-variation-settings:'FILL' 1">check_circle</span>
+                            <div id="csv-import-detail" class="text-[11px] font-bold text-emerald-700"></div>
+                        </div>
+                        <div id="csv-import-error" class="hidden flex items-center gap-2 p-3 rounded-xl" style="background:rgba(244,63,94,0.06);border:1px solid rgba(244,63,94,0.12)">
+                            <span class="material-symbols-outlined text-rose-500 text-base" style="font-variation-settings:'FILL' 1">error</span>
+                            <div id="csv-import-error-msg" class="text-[11px] font-bold text-rose-600"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- end bank -->

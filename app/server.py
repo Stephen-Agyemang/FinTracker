@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from fastapi import FastAPI, HTTPException, UploadFile, File, Request
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from typing import Optional
 import uvicorn
@@ -53,6 +54,7 @@ if _HAS_PLAID:
 
 app = FastAPI(title="FinTracker API", version="4.0.0")
 app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "static")), name="static")
+templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates"))
 
 
 # ── Current user (single local user, no auth) ─────────────────────────────────
@@ -68,11 +70,7 @@ def _current_user(request: Request) -> dict:
 def get_index(request: Request):
     user = expense_store.create_or_get_default_user()
     expense_store.seed_user_data_if_needed(user["id"])
-    path = os.path.join(os.path.dirname(__file__), "templates", "index.html")
-    if not os.path.exists(path):
-        raise HTTPException(status_code=404, detail="index.html not found")
-    with open(path, "r", encoding="utf-8") as f:
-        return f.read()
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 # ── Pydantic models ───────────────────────────────────────────────────────────

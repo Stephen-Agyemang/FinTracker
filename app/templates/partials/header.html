@@ -1,0 +1,29 @@
+        <header class="glass-header shrink-0 h-[60px] flex items-center justify-between px-4 md:px-6">
+            <div class="flex items-center gap-3 min-w-0">
+                <button id="mobile-menu-btn" onclick="openMobileSidebar()" class="p-2 rounded-xl text-slate-500 hover:bg-slate-100 transition-all items-center justify-center">
+                    <span class="material-symbols-outlined text-[20px]">menu</span>
+                </button>
+                <div class="min-w-0">
+                    <h1 id="view-title" class="text-[15px] font-black text-slate-900 font-outfit leading-none">Dashboard</h1>
+                    <p id="view-subtitle" class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mt-1">Financial overview</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2.5 shrink-0">
+                <div class="relative hidden md:block">
+                    <span class="material-symbols-outlined text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 text-[15px]">search</span>
+                    <input id="insights-global-search" onkeydown="if(event.key==='Enter') handleGlobalSearch()" type="text" placeholder="Search…" class="g1 rounded-xl pl-9 pr-4 py-2 text-[11px] text-slate-600 placeholder-slate-300 w-40" />
+                </div>
+                <button onclick="toggleChatDrawer(true)" title="AI Advisor" class="g1 p-2 rounded-xl text-purple-500 transition-all hover:g2">
+                    <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">psychology</span>
+                </button>
+                <button onclick="toggleHistoryDrawer(true)" class="relative g1 p-2 rounded-xl text-slate-500 transition-all">
+                    <span class="material-symbols-outlined text-[18px]">notifications</span>
+                    <span class="absolute top-[7px] right-[7px] w-1.5 h-1.5 bg-teal-500 rounded-full ring-2 ring-white"></span>
+                </button>
+                <button onclick="window.location='/api/export'" class="g1 flex items-center gap-1.5 px-3 py-2 rounded-xl text-slate-500 text-[11px] font-bold hover:text-slate-800 transition-all">
+                    <span class="material-symbols-outlined text-sm">download</span>
+                    Export
+                </button>
+                <div id="user-avatar" class="w-8 h-8 rounded-full flex items-center justify-center font-black text-xs text-white font-outfit overflow-hidden" style="background:#0d9488">S</div>
+            </div>
+        </header>
